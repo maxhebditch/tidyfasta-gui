@@ -20,4 +20,4 @@ tidyFASTA is a cross platform application (Window, Mac OS X, Linux) and is avail
 tidyFASTA is open source and all processing is run entirely on your local machine.
 
 ### Alternatives
-tidyFASTA is also available as a python [package](https://github.com/maxhebditch/tidyfasta) package.
+tidyFASTA is also available as a python [package](https://github.com/maxhebditch/tidyfasta).
