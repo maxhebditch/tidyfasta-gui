@@ -24,7 +24,7 @@ tidyFASTA is a cross platform application (Window, Mac OS X, Linux) and is avail
 ### Installation
 1. Install java (if required)
     + If Java is not already installed on your computer (version 11 or greater), it is available [here](https://www.oracle.com/java/technologies/javase-jdk14-downloads.html) for all major operating systems.
-2. Download the jar file is from the [release tab](https://github.com/maxhebditch/tidyfasta-gui/releases).
+2. Download the jar file from the [release tab](https://github.com/maxhebditch/tidyfasta-gui/releases).
 3. Run the tidyFASTA-gui file by opening the file, or from the command line.
 
 ### Security
