@@ -3,7 +3,9 @@
 
 An open source and cross platform application to fix, and find problems in protein FASTA sequence files.
 
-![](images/tidyFASTA-reformat.png)
+![Reformat whitespace](images/tidyFASTA-reformat.png)
+
+![Non canonical AA](images/tidyFASTA-badAA.png)
 
 ### Features
 tidyFASTA is a cross platform application (Window, Mac OS X, Linux) and is available free of charge and without registration.
