@@ -8,7 +8,7 @@
     </properties>
     <groupId>com.proteinsol.tidyfasta</groupId>
     <artifactId>tidyfasta-gui</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <build>
         <plugins>
             <plugin>
