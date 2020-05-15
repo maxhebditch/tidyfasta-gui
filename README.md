@@ -10,6 +10,17 @@ An open source and cross platform application to fix, and find problems in prote
 ### Features
 tidyFASTA is a cross platform application (Window, Mac OS X, Linux) and is available free of charge and without registration.
 
+## Problems and fixes
+
+| Problem                     | Fix (Strict mode)                       |
+|-----------------------------|-----------------------------------------|
+| Sequence without ID         | ID name added                           |
+| Multiline sequence          | One line per sequence                   |
+| ID without sequence         | Sequence ignored (Exception raised)     |
+| Non canonical AA            | Sequence ignored (Exception raised)     |
+| Lowercase AA                | Converts to uppercase AA                |
+| Excessive Whitespace        | Removes excessive whitespace            | 
+
 ### Installation
 1. Install java (if required)
     + If Java is not already installed on your computer (version 11 or greater), it is available [here](https://www.oracle.com/java/technologies/javase-jdk14-downloads.html) for all major operating systems.
