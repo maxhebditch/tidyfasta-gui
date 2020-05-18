@@ -30,6 +30,14 @@ public class SequenceObjectTest {
     }
 
     @Test
+    void noIDSetAndSequence(){
+        FASTAObject FASTA = new FASTAObject("AAAAAAAAAAAAAAAAAAAAA");
+        assertEquals(">Protein-Sol-Sequence",FASTA.ID);
+        assertEquals("AAAAAAAAAAAAAAAAAAAAA",FASTA.Sequence);
+    }
+
+
+    @Test
     void getNAA(){
         FASTAObject FASTA = new FASTAObject("AAAAAAAAAAAAAAAAAAAAA");
         assertEquals(21, FASTA.getNAA());

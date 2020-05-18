@@ -130,10 +130,39 @@ public class ReadFASTAAndFormatTest {
     @Test
     void testValidCount() throws exceptionsFASTABadAA, exceptionsFASTALength, exceptionsFASTANoSequence {
         String input = ">SEQ1\nAAAAAAAT\nAAAAAAAAAAAAC\n\n>Seq2\nDAAAAAAAAAAAAAAAAAAAAAAE"+
-                "\n\n\n>Seq\nFAA\nAAAAT\nAAAAAAAAAAAAAG\n\n>seq1\nHAAA\nAAAAATAAAAAAAAAAAI";
+                "\n\n\n>Seq\nFAA\nAAAAT\nAAXAAAAAAAAAAAG\n\n>seq1\nHAAA\nAAAAATAAAAAAAAAAAI";
         ReadFASTAAndFormat Assignment = new ReadFASTAAndFormat(input);
 
-        Assertions.assertEquals(4,Assignment.getValidatedNumber());
+        Assertions.assertEquals(3,Assignment.getValidatedNumber());
+    }
+
+    @Test
+    void testSubmittedCount() throws exceptionsFASTABadAA, exceptionsFASTALength, exceptionsFASTANoSequence {
+        String input = ">SEQ1\nAAAAAAAT\nAAAAAAAAAAAAC\n\n>Seq2\nDAAAAAAAAAAAAAAAAAAAAAAE"+
+                "\n\n\n>Seq\nFAA\nAAAAT\nAAAAAXAAAAAAAAG\n\n>seq1\nHAAA\nAAAAATAAAAAAAAAAAI";
+        ReadFASTAAndFormat Assignment = new ReadFASTAAndFormat(input);
+
+        Assertions.assertEquals(4,Assignment.getSubmittedNumber());
+    }
+
+    @Test
+    void testErrorCount() throws exceptionsFASTABadAA, exceptionsFASTALength, exceptionsFASTANoSequence {
+        String input = ">SEQ1\nAAAAAAAT\nAAAAAAAAAAAAC\n\n>Seq2\nDAAAAAAAAAAAAAAAAAAAAAAE"+
+                "\n\n\n>Seq\nFAA\nAAAAT\nAAAAAXAAAAAAAAG\n\n>seq1\nHAAA\nAAAAATAAAAAAAAAAAI";
+        ReadFASTAAndFormat Assignment = new ReadFASTAAndFormat(input);
+
+        Assertions.assertEquals(1,Assignment.getNumErrors());
+    }
+
+    @Test
+    void testErrorArray() throws exceptionsFASTABadAA, exceptionsFASTALength, exceptionsFASTANoSequence {
+        String input = ">SEQ1\nAAAAAAAT\nAAAAAAAAAAAAC\n\n>Seq2\nDAAAAAAAAAAAAAAAAAAAAAAE"+
+                "\n\n\n>Seq\nFAA\nAAAAT\nAAAAAXAAAAAAAAG\n\n>seq1\nHAAA\nAAAAATAAAAAAAAAAAI";
+        ReadFASTAAndFormat Assignment = new ReadFASTAAndFormat(input);
+        String[] ErrArray = Assignment.getErrMsgArray();
+
+        Assertions.assertEquals(1,ErrArray.length);
+        Assertions.assertEquals("Non Canonical amino acid found in >Seq.",ErrArray[0]);
     }
 
     @Test
