@@ -5,15 +5,12 @@ on:
         branches:
             - master
         paths:
-            - '!images/**'
-            - '!.idea/**'
-    pull:
+            - '**.java'
+    pull_request:
         branches:
             - master
         paths:
-            - '!images/**'
-            - '!.idea/**'
-
+            - '**.java'
 
 jobs:
     build:
