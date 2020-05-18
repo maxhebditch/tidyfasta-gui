@@ -1,10 +1,13 @@
 name: Build
 
-on: [push, pull_request]
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - '!images/**'
+            - '!.idea/**'
 
-paths:
-    - '!images/**'
-    - '!.idea/**'
 
 jobs:
     build:
