@@ -7,6 +7,12 @@ on:
         paths:
             - '!images/**'
             - '!.idea/**'
+    pull:
+        branches:
+            - master
+        paths:
+            - '!images/**'
+            - '!.idea/**'
 
 
 jobs:

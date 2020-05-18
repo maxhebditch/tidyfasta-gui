@@ -50,10 +50,7 @@ public class FASTAObject {
 
         NAA = Sequence.length();
 
-        if (NAA == 0) {
-            String errMsg = "Submitted sequence " + ID + " had no associated sequence.";
-            throw new exceptionsFASTANoSequence(errMsg);
-        } else if (NAA > MAX_NAA_ACCEPTED){
+        if (NAA > MAX_NAA_ACCEPTED){
             String errMsg = "Submitted sequence " + ID + " had " + NAA
                     + " amino acids, which is longer than the limit of "
                     + MAX_NAA_ACCEPTED + " amino acids.";

@@ -11,10 +11,10 @@ import java.util.*;
 public class ReadFASTAAndFormat {
     public int getValidatedNumber(){ return ArrayFASTA.size(); }
     public int getSubmittedNumber(){ return ArrayFASTA.size()+numErrors; }
+    public int getNumErrors(){ return numErrors; }
     public ArrayList<FASTAObject> getArrayFASTA(){ return ArrayFASTA; }
     public String getErrMsg(){ return String.join("\n", errorMessages); }
     public String[] getErrMsgArray(){ return errorMessages.toArray(new String[0]); }
-    public int getNumErrors(){ return numErrors; }
 
     private String submittedFASTA;
     private final ArrayList<FASTAObject> ArrayFASTA = new ArrayList<>();
@@ -40,23 +40,6 @@ public class ReadFASTAAndFormat {
         //Make array
         String[] SplitInputBlankLines = submittedFASTA.split("\\r?\\n");
 
-        //if only single item submitted
-        if (SplitInputBlankLines.length == 1){
-
-            String item = SplitInputBlankLines[0].trim();
-            //if just an ID create error message
-            if (item.startsWith(">")) {
-                errorMessages.add("Submitted sequence "+item+" had no associated sequence.");
-            //if it looks like a sequence try and instantiate it
-            } else if (!item.startsWith(">") && item.length() > 0) {
-                try {
-                    ArrayFASTA.add(new FASTAObject(">Sequence-0", item));
-                } catch (exceptionsFASTALength | exceptionsFASTABadAA | exceptionsFASTANoSequence err) {
-                    errorMessages.add(err.getMessage());
-                }
-            }
-        }
-
         //number comparisons to walk through the set
         int idx = 0;
         final int endNum = SplitInputBlankLines.length-1;
@@ -81,11 +64,6 @@ public class ReadFASTAAndFormat {
                     //add to builder and increment
                     SequenceCollector.append(SplitInputBlankLines[idx].trim());
                     idx++;
-                }
-
-                //grab last one if required
-                if (!SplitInputBlankLines[idx].trim().startsWith(">") && SplitInputBlankLines[idx].trim().length() > 0) {
-                    SequenceCollector.append(SplitInputBlankLines[idx].trim());
                 }
             }
 
