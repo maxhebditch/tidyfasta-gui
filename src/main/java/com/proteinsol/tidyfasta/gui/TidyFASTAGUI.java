@@ -125,7 +125,7 @@ public class TidyFASTAGUI extends JFrame {
                     }
                 }
 
-                numValid.setText("Number valid sequences: " + FASTA.getValidatedNumber());
+                numValid.setText("Number of valid sequences: " + FASTA.getValidatedNumber());
                 numSubmitted.setText("Sequences: " + FASTA.getSubmittedNumber());
 
                 StringBuilder FASTAOutputText = new StringBuilder();
