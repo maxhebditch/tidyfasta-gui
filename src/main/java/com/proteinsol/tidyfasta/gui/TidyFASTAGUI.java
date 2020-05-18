@@ -58,7 +58,7 @@ public class TidyFASTAGUI extends JFrame {
             }
 
             public void clearOutput() {
-                numValid.setText("Number valid sequences: ");
+                numValid.setText("Number of valid sequences: ");
                 numSubmitted.setText("Sequences: ");
                 FASTAOutputArea.setText("");
             }
