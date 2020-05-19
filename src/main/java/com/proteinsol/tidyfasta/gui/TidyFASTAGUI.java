@@ -154,12 +154,31 @@ public class TidyFASTAGUI extends JFrame {
     public boolean continueWithAnalysis(ReadFASTAAndFormat objectFASTA) {
 
         if (objectFASTA.getNumErrors() > 0) {
-            buildErrorMessage(objectFASTA);
             return testUserDesire(objectFASTA);
         } else {
             return true;
         }
 
+    }
+
+    public boolean testUserDesire(ReadFASTAAndFormat objectFASTA) {
+        buildErrorMessage(objectFASTA);
+
+        if (objectFASTA.getValidatedNumber() > 0) {
+
+            String errorDialog = this.errorMessage.toString() + "\nWould you like to continue?";
+
+            int dialogResult = JOptionPane.showConfirmDialog(mainPanel,
+                    errorDialog,
+                    "FASTA Errors found",
+                    JOptionPane.YES_NO_OPTION);
+
+            return dialogResult != JOptionPane.NO_OPTION;
+
+        } else {
+            JOptionPane.showMessageDialog(mainPanel, this.errorMessage.toString());
+            return false;
+        }
     }
 
     public void buildErrorMessage(ReadFASTAAndFormat objectFASTA) {
@@ -200,23 +219,6 @@ public class TidyFASTAGUI extends JFrame {
         this.errorMessage = userErrorMessage;
     }
 
-    public boolean testUserDesire(ReadFASTAAndFormat objectFASTA) {
-        if (objectFASTA.getValidatedNumber() > 0) {
-
-            String errorDialog = this.errorMessage.toString() + "\nWould you like to continue?";
-
-            int dialogResult = JOptionPane.showConfirmDialog(mainPanel,
-                    errorDialog,
-                    "FASTA Errors found",
-                    JOptionPane.YES_NO_OPTION);
-
-            return dialogResult != JOptionPane.NO_OPTION;
-
-        } else {
-            JOptionPane.showMessageDialog(mainPanel, this.errorMessage.toString());
-            return false;
-        }
-    }
     public void clearOutput() {
         numValid.setText("Number of valid sequences: ");
         numSubmitted.setText("Sequences: ");
