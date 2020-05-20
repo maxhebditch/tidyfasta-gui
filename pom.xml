@@ -16,7 +16,7 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.4</version>
                 <executions>
-                    <execution> <!-- 1 -->
+                    <execution>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
@@ -24,13 +24,13 @@
                             <destFile>${project.build.directory}/jacoco-ut.exec</destFile>
                         </configuration>
                     </execution>
-                    <execution> <!-- 2 -->
+                    <execution>
                         <id>pre-integration-prepare</id>
                         <goals>
                             <goal>prepare-agent-integration</goal>
                         </goals>
                     </execution>
-                    <execution> <!-- 3 -->
+                    <execution>
                         <id>report</id>
                         <phase>post-integration-test</phase>
                         <goals>
@@ -47,7 +47,7 @@
                             </fileSets>
                         </configuration>
                     </execution>
-                    <execution> <!-- 4 -->
+                    <execution>
                         <id>merged-report-generation</id>
                         <phase>verify</phase>
                         <goals>
