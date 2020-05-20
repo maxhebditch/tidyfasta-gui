@@ -1,75 +1,78 @@
 package com.proteinsol.tidyfasta.packages;
 
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTABadAA;
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTALength;
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTANoSequence;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTABadAA;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTALength;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTANoSequence;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FASTAObject {
-    public String Sequence;
-    public String ID;
-    public int NAA;
+    public final String sequence;
+    public final String id;
+    private int naa;
 
     private static final int MAX_NAA_ACCEPTED = 50000;
     private static final int MIN_NAA_ACCEPTED = 3;
 
-    public int getNAA() {
-        return NAA;
+    public int getNaa() {
+        return naa;
     }
 
-    public FASTAObject(String subSequence)
-            throws exceptionsFASTABadAA, exceptionsFASTALength, exceptionsFASTANoSequence {
+    public FASTAObject(String subSequence){
 
         if ( subSequence.startsWith(">")) {
             String errMsg = "Submitted sequence " + subSequence + " had no associated sequence.";
-            throw new exceptionsFASTANoSequence(errMsg);
+            throw new ExceptionsFASTANoSequence(errMsg);
         }
 
-        ID = ">Protein-Sol-Sequence";
-        Sequence = subSequence;
+        id = ">Protein-Sol-Sequence";
+        sequence = subSequence.toUpperCase();
 
         validateLength();
         validateAA();
-        Sequence = Sequence.toUpperCase();
     }
 
-    public FASTAObject(String subID, String subSequence)
-            throws exceptionsFASTABadAA, exceptionsFASTALength, exceptionsFASTANoSequence {
+    public FASTAObject(String subID, String subSequence){
 
-        ID = subID;
-        Sequence = subSequence;
+        id = subID;
+        sequence = subSequence.toUpperCase();
 
         validateLength();
         validateAA();
-        Sequence = Sequence.toUpperCase();
     }
 
-    public void validateLength() throws exceptionsFASTALength, exceptionsFASTANoSequence {
+    public void validateLength(){
 
-        NAA = Sequence.length();
+        naa = sequence.length();
 
-        if (NAA > MAX_NAA_ACCEPTED){
-            String errMsg = "Submitted sequence " + ID + " had " + NAA
-                    + " amino acids, which is longer than the limit of "
-                    + MAX_NAA_ACCEPTED + " amino acids.";
-            throw new exceptionsFASTALength(errMsg);
-        } else if (NAA < MIN_NAA_ACCEPTED){
-            String errMsg = "Submitted sequence " + ID + " had " + NAA
-                    + " amino acids, which is shorter than the limit of "
-                    + MIN_NAA_ACCEPTED + " amino acids.";
-            throw new exceptionsFASTALength(errMsg);
+        if ((naa > MAX_NAA_ACCEPTED) || (naa < MIN_NAA_ACCEPTED)) {
+            String lengthError = null;
+            int warningValue = 0;
+
+            if (naa > MAX_NAA_ACCEPTED) {
+                lengthError = "longer";
+                warningValue = MAX_NAA_ACCEPTED;
+            } else {
+                lengthError = "shorter";
+                warningValue = MIN_NAA_ACCEPTED;
+            }
+
+            String errMsg = String.format("Submitted sequence %s had %d amino acids, which is %s than the limit of " +
+                    "%d amino acids.", id, naa, lengthError, warningValue);
+
+            throw new ExceptionsFASTALength(errMsg);
         }
+
     }
 
-    public void validateAA() throws exceptionsFASTABadAA {
+    public void validateAA() {
         String regex = "([^qwertyipasdfghklcvnmQWERTYIPASDFGHKLCVNM]+)";
-        Pattern NonCanonicalAA = Pattern.compile(regex);
-        Matcher matcher = NonCanonicalAA.matcher(Sequence);
+        Pattern nonCanonicalAA = Pattern.compile(regex);
+        Matcher matcher = nonCanonicalAA.matcher(sequence);
 
         if(matcher.find()){
-            throw new exceptionsFASTABadAA("Non Canonical amino acid found in " + ID + "." );
+            throw new ExceptionsFASTABadAA("Non Canonical amino acid found in " + id + "." );
         }
     }
 }

@@ -1,12 +1,12 @@
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTABadAA;
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTALength;
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTANoSequence;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTABadAA;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTALength;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTANoSequence;
 import com.proteinsol.tidyfasta.packages.FASTAObject;
 import com.proteinsol.tidyfasta.packages.ReadFASTAAndFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class ReadFASTAAndFormatTest {
@@ -19,9 +19,9 @@ public class ReadFASTAAndFormatTest {
         String expectedID = ">SEQ1";
         String expectedSequence = "AAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID = ObjArray.get(0).ID;
-        String returnedSequence = ObjArray.get(0).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID = ObjArray.get(0).id;
+        String returnedSequence = ObjArray.get(0).sequence;
 
         Assertions.assertEquals(expectedID,returnedID);
         Assertions.assertEquals(expectedSequence,returnedSequence);
@@ -37,11 +37,11 @@ public class ReadFASTAAndFormatTest {
         String expectedID2 = ">SEQ2";
         String expectedSequence2 = "TAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
-        String returnedID2 = ObjArray.get(1).ID;
-        String returnedSequence2 = ObjArray.get(1).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
+        String returnedID2 = ObjArray.get(1).id;
+        String returnedSequence2 = ObjArray.get(1).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
@@ -64,13 +64,13 @@ public class ReadFASTAAndFormatTest {
         String expectedID3 = ">SEQ1";
         String expectedSequence3 = "AAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
-        String returnedID2 = ObjArray.get(1).ID;
-        String returnedSequence2 = ObjArray.get(1).Sequence;
-        String returnedID3 = ObjArray.get(2).ID;
-        String returnedSequence3 = ObjArray.get(2).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
+        String returnedID2 = ObjArray.get(1).id;
+        String returnedSequence2 = ObjArray.get(1).sequence;
+        String returnedID3 = ObjArray.get(2).id;
+        String returnedSequence3 = ObjArray.get(2).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
@@ -88,9 +88,9 @@ public class ReadFASTAAndFormatTest {
         String expectedID1 = ">SEQ1";
         String expectedSequence1 = "AAAAAAATAAAAAAAAAAAAAAAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
@@ -110,14 +110,14 @@ public class ReadFASTAAndFormatTest {
         String expectedID3 = ">SEQ3";
         String expectedSequence3 = "FFFFFFFFFFFFFFFFFFFFFFFFFFF";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
 
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
-        String returnedID2 = ObjArray.get(1).ID;
-        String returnedSequence2 = ObjArray.get(1).Sequence;
-        String returnedID3 = ObjArray.get(2).ID;
-        String returnedSequence3 = ObjArray.get(2).Sequence;
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
+        String returnedID2 = ObjArray.get(1).id;
+        String returnedSequence2 = ObjArray.get(1).sequence;
+        String returnedID3 = ObjArray.get(2).id;
+        String returnedSequence3 = ObjArray.get(2).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
@@ -128,7 +128,7 @@ public class ReadFASTAAndFormatTest {
     }
 
     @Test
-    void testValidCount() throws exceptionsFASTABadAA, exceptionsFASTALength, exceptionsFASTANoSequence {
+    void testValidCount() throws ExceptionsFASTABadAA, ExceptionsFASTALength, ExceptionsFASTANoSequence {
         String input = ">SEQ1\nAAAAAAAT\nAAAAAAAAAAAAC\n\n>Seq2\nDAAAAAAAAAAAAAAAAAAAAAAE"+
                 "\n\n\n>Seq\nFAA\nAAAAT\nAAXAAAAAAAAAAAG\n\n>seq1\nHAAA\nAAAAATAAAAAAAAAAAI";
         ReadFASTAAndFormat Assignment = new ReadFASTAAndFormat(input);
@@ -137,7 +137,7 @@ public class ReadFASTAAndFormatTest {
     }
 
     @Test
-    void testSubmittedCount() throws exceptionsFASTABadAA, exceptionsFASTALength, exceptionsFASTANoSequence {
+    void testSubmittedCount() throws ExceptionsFASTABadAA, ExceptionsFASTALength, ExceptionsFASTANoSequence {
         String input = ">SEQ1\nAAAAAAAT\nAAAAAAAAAAAAC\n\n>Seq2\nDAAAAAAAAAAAAAAAAAAAAAAE"+
                 "\n\n\n>Seq\nFAA\nAAAAT\nAAAAAXAAAAAAAAG\n\n>seq1\nHAAA\nAAAAATAAAAAAAAAAAI";
         ReadFASTAAndFormat Assignment = new ReadFASTAAndFormat(input);
@@ -146,7 +146,7 @@ public class ReadFASTAAndFormatTest {
     }
 
     @Test
-    void testErrorCount() throws exceptionsFASTABadAA, exceptionsFASTALength, exceptionsFASTANoSequence {
+    void testErrorCount() throws ExceptionsFASTABadAA, ExceptionsFASTALength, ExceptionsFASTANoSequence {
         String input = ">SEQ1\nAAAAAAAT\nAAAAAAAAAAAAC\n\n>Seq2\nDAAAAAAAAAAAAAAAAAAAAAAE"+
                 "\n\n\n>Seq\nFAA\nAAAAT\nAAAAAXAAAAAAAAG\n\n>seq1\nHAAA\nAAAAATAAAAAAAAAAAI";
         ReadFASTAAndFormat Assignment = new ReadFASTAAndFormat(input);
@@ -155,7 +155,7 @@ public class ReadFASTAAndFormatTest {
     }
 
     @Test
-    void testErrorArray() throws exceptionsFASTABadAA, exceptionsFASTALength, exceptionsFASTANoSequence {
+    void testErrorArray() throws ExceptionsFASTABadAA, ExceptionsFASTALength, ExceptionsFASTANoSequence {
         String input = ">SEQ1\nAAAAAAAT\nAAAAAAAAAAAAC\n\n>Seq2\nDAAAAAAAAAAAAAAAAAAAAAAE"+
                 "\n\n\n>Seq\nFAA\nAAAAT\nAAAAAXAAAAAAAAG\n\n>seq1\nHAAA\nAAAAATAAAAAAAAAAAI";
         ReadFASTAAndFormat Assignment = new ReadFASTAAndFormat(input);
@@ -173,9 +173,9 @@ public class ReadFASTAAndFormatTest {
         String expectedID = ">Sequence-0";
         String expectedSequence = "AAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID = ObjArray.get(0).ID;
-        String returnedSequence = ObjArray.get(0).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID = ObjArray.get(0).id;
+        String returnedSequence = ObjArray.get(0).sequence;
 
         Assertions.assertEquals(expectedID, returnedID);
         Assertions.assertEquals(expectedSequence, returnedSequence);
@@ -189,9 +189,9 @@ public class ReadFASTAAndFormatTest {
         String expectedID = ">Sequence-0";
         String expectedSequence = "MAAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID = ObjArray.get(0).ID;
-        String returnedSequence = ObjArray.get(0).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID = ObjArray.get(0).id;
+        String returnedSequence = ObjArray.get(0).sequence;
 
         Assertions.assertEquals(expectedID,returnedID);
         Assertions.assertEquals(expectedSequence,returnedSequence);
@@ -205,9 +205,9 @@ public class ReadFASTAAndFormatTest {
         String expectedID = ">Sequence-0";
         String expectedSequence = "MAAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID = ObjArray.get(0).ID;
-        String returnedSequence = ObjArray.get(0).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID = ObjArray.get(0).id;
+        String returnedSequence = ObjArray.get(0).sequence;
 
         Assertions.assertEquals(expectedID,returnedID);
         Assertions.assertEquals(expectedSequence,returnedSequence);
@@ -231,15 +231,15 @@ public class ReadFASTAAndFormatTest {
         String expectedID3 = ">Sequence-1";
         String expectedSequence3 = "AAAAAAAAATAAAAAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID0 = ObjArray.get(0).ID;
-        String returnedSequence0 = ObjArray.get(0).Sequence;
-        String returnedID1 = ObjArray.get(1).ID;
-        String returnedSequence1 = ObjArray.get(1).Sequence;
-        String returnedID2 = ObjArray.get(2).ID;
-        String returnedSequence2 = ObjArray.get(2).Sequence;
-        String returnedID3 = ObjArray.get(3).ID;
-        String returnedSequence3 = ObjArray.get(3).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID0 = ObjArray.get(0).id;
+        String returnedSequence0 = ObjArray.get(0).sequence;
+        String returnedID1 = ObjArray.get(1).id;
+        String returnedSequence1 = ObjArray.get(1).sequence;
+        String returnedID2 = ObjArray.get(2).id;
+        String returnedSequence2 = ObjArray.get(2).sequence;
+        String returnedID3 = ObjArray.get(3).id;
+        String returnedSequence3 = ObjArray.get(3).sequence;
 
         Assertions.assertEquals(expectedID0,returnedID0);
         Assertions.assertEquals(expectedSequence0,returnedSequence0);
@@ -261,11 +261,11 @@ public class ReadFASTAAndFormatTest {
         String expectedID3 = ">SEQ2";
         String expectedSequence3 = "TAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
-        String returnedID3 = ObjArray.get(1).ID;
-        String returnedSequence3 = ObjArray.get(1).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
+        String returnedID3 = ObjArray.get(1).id;
+        String returnedSequence3 = ObjArray.get(1).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
@@ -284,11 +284,11 @@ public class ReadFASTAAndFormatTest {
         String expectedID3 = ">SEQ2";
         String expectedSequence3 = "TAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
-        String returnedID3 = ObjArray.get(1).ID;
-        String returnedSequence3 = ObjArray.get(1).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
+        String returnedID3 = ObjArray.get(1).id;
+        String returnedSequence3 = ObjArray.get(1).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
@@ -307,11 +307,11 @@ public class ReadFASTAAndFormatTest {
         String expectedID3 = ">SEQ2";
         String expectedSequence3 = "TAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
-        String returnedID3 = ObjArray.get(1).ID;
-        String returnedSequence3 = ObjArray.get(1).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
+        String returnedID3 = ObjArray.get(1).id;
+        String returnedSequence3 = ObjArray.get(1).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
@@ -330,11 +330,11 @@ public class ReadFASTAAndFormatTest {
         String expectedID3 = ">SEQ2";
         String expectedSequence3 = "TAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
-        String returnedID3 = ObjArray.get(1).ID;
-        String returnedSequence3 = ObjArray.get(1).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
+        String returnedID3 = ObjArray.get(1).id;
+        String returnedSequence3 = ObjArray.get(1).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
@@ -360,15 +360,15 @@ public class ReadFASTAAndFormatTest {
         String expectedID3 = ">Sequence-0";
         String expectedSequence3 = "AAAAAAAAATAAAAAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID0 = ObjArray.get(0).ID;
-        String returnedSequence0 = ObjArray.get(0).Sequence;
-        String returnedID1 = ObjArray.get(1).ID;
-        String returnedSequence1 = ObjArray.get(1).Sequence;
-        String returnedID2 = ObjArray.get(2).ID;
-        String returnedSequence2 = ObjArray.get(2).Sequence;
-        String returnedID3 = ObjArray.get(3).ID;
-        String returnedSequence3 = ObjArray.get(3).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID0 = ObjArray.get(0).id;
+        String returnedSequence0 = ObjArray.get(0).sequence;
+        String returnedID1 = ObjArray.get(1).id;
+        String returnedSequence1 = ObjArray.get(1).sequence;
+        String returnedID2 = ObjArray.get(2).id;
+        String returnedSequence2 = ObjArray.get(2).sequence;
+        String returnedID3 = ObjArray.get(3).id;
+        String returnedSequence3 = ObjArray.get(3).sequence;
 
         Assertions.assertEquals(expectedID0,returnedID0);
         Assertions.assertEquals(expectedSequence0,returnedSequence0);
@@ -390,11 +390,11 @@ public class ReadFASTAAndFormatTest {
         String expectedID2 = ">Sequence-0";
         String expectedSequence2 = "TAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
-        String returnedID2 = ObjArray.get(1).ID;
-        String returnedSequence2 = ObjArray.get(1).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
+        String returnedID2 = ObjArray.get(1).id;
+        String returnedSequence2 = ObjArray.get(1).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
@@ -415,13 +415,13 @@ public class ReadFASTAAndFormatTest {
         String expectedID3 = ">Sequence-1";
         String expectedSequence3 = "TAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
-        String returnedID2 = ObjArray.get(1).ID;
-        String returnedSequence2 = ObjArray.get(1).Sequence;
-        String returnedID3 = ObjArray.get(2).ID;
-        String returnedSequence3 = ObjArray.get(2).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
+        String returnedID2 = ObjArray.get(1).id;
+        String returnedSequence2 = ObjArray.get(1).sequence;
+        String returnedID3 = ObjArray.get(2).id;
+        String returnedSequence3 = ObjArray.get(2).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
@@ -441,11 +441,11 @@ public class ReadFASTAAndFormatTest {
         String expectedID2 = ">Sequence-0";
         String expectedSequence2 = "TAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        ArrayList<FASTAObject> ObjArray = Assignment.getArrayFASTA();
-        String returnedID1 = ObjArray.get(0).ID;
-        String returnedSequence1 = ObjArray.get(0).Sequence;
-        String returnedID2 = ObjArray.get(1).ID;
-        String returnedSequence2 = ObjArray.get(1).Sequence;
+        List<FASTAObject> ObjArray = Assignment.getArrayFASTA();
+        String returnedID1 = ObjArray.get(0).id;
+        String returnedSequence1 = ObjArray.get(0).sequence;
+        String returnedID2 = ObjArray.get(1).id;
+        String returnedSequence2 = ObjArray.get(1).sequence;
 
         Assertions.assertEquals(expectedID1,returnedID1);
         Assertions.assertEquals(expectedSequence1,returnedSequence1);
