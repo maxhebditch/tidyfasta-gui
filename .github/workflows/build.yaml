@@ -21,4 +21,4 @@ jobs:
             - uses: actions/setup-java@v1
               with:
                   java-version: 11.0.7
-            - run: mvn -B package --file pom.xml
+            - run: mvn -B package --file .github/workflows/githubaction-pom.xml
