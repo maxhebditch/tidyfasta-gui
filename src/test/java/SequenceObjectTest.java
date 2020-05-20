@@ -13,34 +13,34 @@ public class SequenceObjectTest {
     @Test
     void setSequence(){
         FASTAObject FASTA = new FASTAObject("AAAAAAAAAAAAAAAAAAAAAAAAA");
-        assertEquals("AAAAAAAAAAAAAAAAAAAAAAAAA" ,FASTA.Sequence);
+        assertEquals("AAAAAAAAAAAAAAAAAAAAAAAAA" ,FASTA.sequence);
     }
 
     @Test
     void setIDAndSequence(){
         FASTAObject FASTA = new FASTAObject(">Seq1","AAAAAAAAAAAAAAAAAAAAA");
-        assertEquals(">Seq1",FASTA.ID);
-        assertEquals("AAAAAAAAAAAAAAAAAAAAA",FASTA.Sequence);
+        assertEquals(">Seq1",FASTA.id);
+        assertEquals("AAAAAAAAAAAAAAAAAAAAA",FASTA.sequence);
     }
 
     @Test
     void correctLowercaseInput(){
         FASTAObject FASTA = new FASTAObject("aaaaaaaaaaaaaaaaaaaaa");
-        assertEquals("AAAAAAAAAAAAAAAAAAAAA",FASTA.Sequence);
+        assertEquals("AAAAAAAAAAAAAAAAAAAAA",FASTA.sequence);
     }
 
     @Test
     void noIDSetAndSequence(){
         FASTAObject FASTA = new FASTAObject("AAAAAAAAAAAAAAAAAAAAA");
-        assertEquals(">Protein-Sol-Sequence",FASTA.ID);
-        assertEquals("AAAAAAAAAAAAAAAAAAAAA",FASTA.Sequence);
+        assertEquals(">Protein-Sol-Sequence",FASTA.id);
+        assertEquals("AAAAAAAAAAAAAAAAAAAAA",FASTA.sequence);
     }
 
 
     @Test
     void getNAA(){
         FASTAObject FASTA = new FASTAObject("AAAAAAAAAAAAAAAAAAAAA");
-        assertEquals(21, FASTA.getNAA());
+        assertEquals(21, FASTA.getNaa());
     }
 
     @Test

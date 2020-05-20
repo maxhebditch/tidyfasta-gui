@@ -134,9 +134,9 @@ public class TidyFASTAGUI extends JFrame {
             StringBuilder outputFASTAText = new StringBuilder();
 
             for (FASTAObject validFasta : objectFASTA.getArrayFASTA()) {
-                outputFASTAText.append(validFasta.ID);
+                outputFASTAText.append(validFasta.id);
                 outputFASTAText.append("\n");
-                outputFASTAText.append(validFasta.Sequence);
+                outputFASTAText.append(validFasta.sequence);
                 outputFASTAText.append("\n\n");
             }
 
