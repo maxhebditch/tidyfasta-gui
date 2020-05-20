@@ -1,8 +1,8 @@
 package com.proteinsol.tidyfasta.packages;
 
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTABadAA;
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTALength;
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTANoSequence;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTABadAA;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTALength;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTANoSequence;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +23,7 @@ public class FASTAObject {
 
         if ( subSequence.startsWith(">")) {
             String errMsg = "Submitted sequence " + subSequence + " had no associated sequence.";
-            throw new exceptionsFASTANoSequence(errMsg);
+            throw new ExceptionsFASTANoSequence(errMsg);
         }
 
         id = ">Protein-Sol-Sequence";
@@ -61,7 +61,7 @@ public class FASTAObject {
             String errMsg = String.format("Submitted sequence %s had %d amino acids, which is %s than the limit of " +
                     "%d amino acids.", id, naa, lengthError, warningValue);
 
-            throw new exceptionsFASTALength(errMsg);
+            throw new ExceptionsFASTALength(errMsg);
         }
 
     }
@@ -72,7 +72,7 @@ public class FASTAObject {
         Matcher matcher = nonCanonicalAA.matcher(sequence);
 
         if(matcher.find()){
-            throw new exceptionsFASTABadAA("Non Canonical amino acid found in " + id + "." );
+            throw new ExceptionsFASTABadAA("Non Canonical amino acid found in " + id + "." );
         }
     }
 }

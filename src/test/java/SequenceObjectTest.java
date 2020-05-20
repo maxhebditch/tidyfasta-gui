@@ -1,6 +1,6 @@
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTABadAA;
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTALength;
-import com.proteinsol.tidyfasta.exceptions.exceptionsFASTANoSequence;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTABadAA;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTALength;
+import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTANoSequence;
 import com.proteinsol.tidyfasta.packages.FASTAObject;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +46,7 @@ public class SequenceObjectTest {
     @Test
     void throwExceptionSequenceTooShort(){
 
-        Exception exception = assertThrows(exceptionsFASTALength.class, () -> {
+        Exception exception = assertThrows(ExceptionsFASTALength.class, () -> {
             FASTAObject FASTA = new FASTAObject("AA");
         });
 
@@ -62,7 +62,7 @@ public class SequenceObjectTest {
         String AA = "A";
         String sequence = AA.repeat(100000);
 
-        Exception exception = assertThrows(exceptionsFASTALength.class, () -> {
+        Exception exception = assertThrows(ExceptionsFASTALength.class, () -> {
             FASTAObject FASTA = new FASTAObject(sequence);
         });
 
@@ -77,7 +77,7 @@ public class SequenceObjectTest {
     void throwExceptionIDOnly(){
         String input = ">SEQ1";
 
-        Exception exception = assertThrows(exceptionsFASTANoSequence.class, () -> {
+        Exception exception = assertThrows(ExceptionsFASTANoSequence.class, () -> {
             FASTAObject FASTA = new FASTAObject(input);
         });
 
@@ -93,7 +93,7 @@ public class SequenceObjectTest {
         String ID = ">SEQ1";
         String sequence = "AAAAAAAAAAAAAAAAAAAAAAXAAAAAAAAAAAAAAAAAAAAAAAAa";
 
-        Exception exception = assertThrows(exceptionsFASTABadAA.class, () -> {
+        Exception exception = assertThrows(ExceptionsFASTABadAA.class, () -> {
             FASTAObject FASTA = new FASTAObject(ID, sequence);
         });
 
@@ -107,7 +107,7 @@ public class SequenceObjectTest {
         String ID = ">SEQ1";
         String spaceSequence = "AAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAA";
 
-        Exception exception = assertThrows(exceptionsFASTABadAA.class, () -> {
+        Exception exception = assertThrows(ExceptionsFASTABadAA.class, () -> {
             FASTAObject FASTA = new FASTAObject(ID, spaceSequence);
         });
 
@@ -122,7 +122,7 @@ public class SequenceObjectTest {
         String ID = ">SEQ1";
         String SpaceSequence = " TAAAAAAAAAAAAAAAAATAAAAAAAA";
 
-        Exception exception = assertThrows(exceptionsFASTABadAA.class, () -> {
+        Exception exception = assertThrows(ExceptionsFASTABadAA.class, () -> {
             FASTAObject FASTA = new FASTAObject(ID, SpaceSequence);
         });
 
@@ -137,7 +137,7 @@ public class SequenceObjectTest {
         String ID = ">SEQ1";
         String NumberSequence = "AAAAAAAAAAAAAAAAAAAAAA1AAAAAAAAAAAAAAAAAAAAAAAA";
 
-        Exception exception = assertThrows(exceptionsFASTABadAA.class, () -> {
+        Exception exception = assertThrows(ExceptionsFASTABadAA.class, () -> {
             FASTAObject FASTA = new FASTAObject(ID, NumberSequence);
         });
 
