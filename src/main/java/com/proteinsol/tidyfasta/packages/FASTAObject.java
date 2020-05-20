@@ -46,22 +46,12 @@ public class FASTAObject {
 
         naa = sequence.length();
 
-        if ((naa > MAX_NAA_ACCEPTED) || (naa < MIN_NAA_ACCEPTED)) {
-            String lengthError = null;
-            int warningValue = 0;
+        String errMsg = "Submitted sequence %s had %d amino acids, which is %s than the limit of %d amino acids.";
 
-            if (naa > MAX_NAA_ACCEPTED) {
-                lengthError = "longer";
-                warningValue = MAX_NAA_ACCEPTED;
-            } else {
-                lengthError = "shorter";
-                warningValue = MIN_NAA_ACCEPTED;
-            }
-
-            String errMsg = String.format("Submitted sequence %s had %d amino acids, which is %s than the limit of " +
-                    "%d amino acids.", id, naa, lengthError, warningValue);
-
-            throw new ExceptionsFASTALength(errMsg);
+        if (naa > MAX_NAA_ACCEPTED) {
+            throw new ExceptionsFASTALength(String.format(errMsg,id,naa,"longer",MAX_NAA_ACCEPTED));
+        } else if (naa < MIN_NAA_ACCEPTED) {
+            throw new ExceptionsFASTALength(String.format(errMsg,id,naa,"shorter",MIN_NAA_ACCEPTED));
         }
 
     }
