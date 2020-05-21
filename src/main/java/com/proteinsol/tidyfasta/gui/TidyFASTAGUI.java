@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class TidyFASTAGUI extends JFrame {
     private JPanel mainPanel;
 
@@ -118,6 +117,12 @@ public class TidyFASTAGUI extends JFrame {
             return;
         }
 
+        String result = assembleLines(lines);
+
+        inputAreaFASTA.setText(result);
+    }
+
+    public String assembleLines(List<String> lines) {
         StringBuilder result = new StringBuilder();
 
         for (String line : lines) {
@@ -126,7 +131,7 @@ public class TidyFASTAGUI extends JFrame {
         }
         result.setLength(result.length() - 1);
 
-        inputAreaFASTA.setText(result.toString());
+        return result.toString();
     }
 
     public void submitSequence() {
