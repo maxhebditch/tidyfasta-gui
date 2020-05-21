@@ -29,6 +29,7 @@ public class FASTAObject {
 
         if ( subSequence.startsWith(">")) {
             String errMsg = "Submitted sequence " + subSequence + " had no associated sequence.";
+            logger.log(Level.FINE, errMsg);
             throw new ExceptionsFASTANoSequence(errMsg);
         }
 
@@ -53,13 +54,18 @@ public class FASTAObject {
     public void validateLength(){
 
         naa = sequence.length();
+        logger.log(Level.FINE,() -> "Item "+id+" has "+naa+" amino acids");
 
         String errMsg = "Submitted sequence %s had %d amino acids, which is %s than the limit of %d amino acids.";
 
         if (naa > MAX_NAA_ACCEPTED) {
-            throw new ExceptionsFASTALength(String.format(errMsg,id,naa,"longer",MAX_NAA_ACCEPTED));
+            String tooLongError = String.format(errMsg,id,naa,"longer",MAX_NAA_ACCEPTED);
+            logger.log(Level.INFO,tooLongError);
+            throw new ExceptionsFASTALength(tooLongError);
         } else if (naa < MIN_NAA_ACCEPTED) {
-            throw new ExceptionsFASTALength(String.format(errMsg,id,naa,"shorter",MIN_NAA_ACCEPTED));
+            String tooShortError = String.format(errMsg,id,naa,"shorter",MIN_NAA_ACCEPTED);
+            logger.log(Level.INFO,tooShortError);
+            throw new ExceptionsFASTALength(tooShortError);
         }
 
     }
@@ -70,7 +76,10 @@ public class FASTAObject {
         Matcher matcher = nonCanonicalAA.matcher(sequence);
 
         if(matcher.find()){
-            throw new ExceptionsFASTABadAA("Non Canonical amino acid found in " + id + "." );
+            String errMsg = "Non Canonical amino acid found in " + id + ".";
+            logger.log(Level.INFO,errMsg);
+            throw new ExceptionsFASTABadAA(errMsg);
         }
     }
+
 }

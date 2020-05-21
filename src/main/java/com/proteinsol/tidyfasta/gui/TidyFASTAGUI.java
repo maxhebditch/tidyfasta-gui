@@ -50,7 +50,7 @@ public class TidyFASTAGUI extends JFrame {
     private String validFASTA;
     private StringBuilder errorMessage;
 
-    Logger logger = Logger.getLogger(TidyFASTAGUI.class.getName());
+    transient Logger logger = Logger.getLogger(TidyFASTAGUI.class.getName());
 
     public TidyFASTAGUI(String title) {
         super(title);
@@ -58,6 +58,8 @@ public class TidyFASTAGUI extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
         this.pack();
+
+        logger.log(Level.FINER, "Constructing GUI App");
 
         openButton.addActionListener(e -> openFile());
 
@@ -70,10 +72,12 @@ public class TidyFASTAGUI extends JFrame {
 
         saveButton.addActionListener(e -> {
             if (validFASTA != null) {
+                logger.log(Level.FINER, "Writing file");
                 writeFile();
             } else {
+                String saveMsg = "Submit file before saving.";
                 JOptionPane.showMessageDialog(mainPanel,
-                        "Submit file before saving.");
+                        saveMsg);
             }
         });
     }
@@ -91,23 +95,27 @@ public class TidyFASTAGUI extends JFrame {
         chooser.setFileFilter(filter);
         int chooserResult = chooser.showOpenDialog(mainPanel);
 
+
         File fileFASTA;
         if (chooserResult == JFileChooser.APPROVE_OPTION) {
             fileFASTA = chooser.getSelectedFile();
+            logger.log(Level.FINER, () -> "Opening file " + fileFASTA.toString());
             inputAreaFASTA.setText("");
             outputAreaFASTA.setText("");
         } else {
             return;
         }
 
-        List<String> lines = Collections.emptyList();
+        List<String> lines;
         Path filenameFASTA = fileFASTA.toPath();
 
         try {
             lines = Files.readAllLines(filenameFASTA, StandardCharsets.UTF_8);
         } catch (IOException ioException) {
-            JOptionPane.showMessageDialog(mainPanel,
-                    filenameFASTA.toString() + " not found");
+            String errMsg = filenameFASTA.toString() + " not found";
+            logger.log(Level.INFO, errMsg);
+            JOptionPane.showMessageDialog(mainPanel, errMsg);
+            return;
         }
 
         StringBuilder result = new StringBuilder();
@@ -125,8 +133,9 @@ public class TidyFASTAGUI extends JFrame {
         String submittedSequences = inputAreaFASTA.getText();
 
         if (submittedSequences.length() == 0) {
-            JOptionPane.showMessageDialog(mainPanel,
-                    "No sequence submitted");
+            String errMsg = "No sequence submitted";
+            logger.log(Level.INFO, errMsg);
+            JOptionPane.showMessageDialog(mainPanel, errMsg);
             return;
         }
 
@@ -135,6 +144,9 @@ public class TidyFASTAGUI extends JFrame {
         if (continueWithAnalysis(objectFASTA)) {
             numValid.setText("Number of valid sequences: " + objectFASTA.getValidatedNumber());
             numSubmitted.setText("Sequences: " + objectFASTA.getSubmittedNumber());
+
+            logger.log(Level.FINER, () -> objectFASTA.getValidatedNumber() + "/" + objectFASTA.getSubmittedNumber()
+                    + " valid");
 
             StringBuilder outputFASTAText = new StringBuilder();
 
@@ -158,14 +170,12 @@ public class TidyFASTAGUI extends JFrame {
 
     public boolean continueWithAnalysis(ReadFASTAAndFormat objectFASTA) {
 
-        logger.log(Level.INFO, objectFASTA.getErrMsg());
-        logger.log(Level.INFO, Integer.toString(objectFASTA.getNumErrors()));
-
         if (objectFASTA.getNumErrors() > 0) {
-            logger.log(Level.INFO, "Errors found");
+            logger.log(Level.INFO, () -> "Found " + objectFASTA.getNumErrors() + " Errors\n"
+                    + objectFASTA.getErrMsg());
             return testUserDesire(objectFASTA);
         } else {
-            logger.log(Level.FINE, "No Errors found");
+            logger.log(Level.FINER, "No errors found");
             return true;
         }
 
@@ -175,6 +185,7 @@ public class TidyFASTAGUI extends JFrame {
         buildErrorMessage(objectFASTA);
 
         if (objectFASTA.getValidatedNumber() > 0) {
+            logger.log(Level.FINER, "Does user want to continue without error sequences?");
 
             String errorDialog = this.errorMessage.toString() + "\nWould you like to continue?";
 
@@ -186,6 +197,7 @@ public class TidyFASTAGUI extends JFrame {
             return dialogResult != JOptionPane.NO_OPTION;
 
         } else {
+            logger.log(Level.FINER, "Cannot continue as no valid options");
             JOptionPane.showMessageDialog(mainPanel, this.errorMessage.toString());
             return false;
         }
@@ -226,6 +238,7 @@ public class TidyFASTAGUI extends JFrame {
             userErrorMessage.append("\n");
         }
 
+        logger.log(Level.FINER, () -> "Showing user error message\n" + userErrorMessage);
         this.errorMessage = userErrorMessage;
     }
 
@@ -249,12 +262,15 @@ public class TidyFASTAGUI extends JFrame {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             fileToSave = saveChooser.getSelectedFile();
         } else {
+            logger.log(Level.INFO, "No file chosen for saving");
             return;
         }
 
         String fileString = fileToSave.toString();
 
         if (!fileString.contains(".")) {
+            logger.log(Level.INFO, () -> "Renaming " + fileToSave.toString() + " to "
+                    + fileToSave.toString() + ".fasta");
             fileString = fileString + ".fasta";
         }
 
@@ -262,23 +278,29 @@ public class TidyFASTAGUI extends JFrame {
 
         if (Files.exists(saveFileName)) {
 
+            logger.log(Level.INFO, () -> saveFileName.toString() + " already exists.");
+
             int dialogResult = JOptionPane.showConfirmDialog(mainPanel,
                     saveFileName.toString() + " already exists." +
                             "\nWould you like to overwrite it?",
                     "FASTA Errors found",
                     JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.NO_OPTION) {
+                logger.log(Level.FINER, () -> saveFileName.toString() + " not overwritten.");
                 return;
             }
         }
+        logger.log(Level.FINER, () -> saveFileName.toString() + " overwritten.");
 
         try {
             Files.write(saveFileName, Collections.singleton(validFASTA));
-            JOptionPane.showMessageDialog(mainPanel,
-                    saveFileName.toString() + " saved!");
+            String saveMsg = saveFileName.toString() + " saved!";
+            logger.log(Level.INFO, saveMsg);
+            JOptionPane.showMessageDialog(mainPanel, saveMsg);
         } catch (IOException err) {
-            JOptionPane.showMessageDialog(mainPanel,
-                    saveFileName.toString() + " not writable.");
+            String saveMsg = saveFileName.toString() + " not writable.";
+            logger.log(Level.INFO, saveMsg);
+            JOptionPane.showMessageDialog(mainPanel, saveMsg);
         }
     }
 
@@ -286,6 +308,7 @@ public class TidyFASTAGUI extends JFrame {
         StringSelection validFASTASelect = new StringSelection(validFASTA);
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
         cb.setContents(validFASTASelect, null);
+        logger.log(Level.FINER, "Contents saved to clipboard");
     }
 
 

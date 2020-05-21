@@ -1,7 +1,5 @@
 package com.proteinsol.tidyfasta.packages;
 
-//TODO logs
-
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTABadAA;
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTALength;
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTANoSequence;
@@ -27,6 +25,7 @@ public class ReadFASTAAndFormat {
 
     public ReadFASTAAndFormat(String submittedFASTA){
         this.submittedFASTA = submittedFASTA;
+        logger.log(Level.FINER, () -> "Reading FASTA data "+submittedFASTA);
         assignIDAndSequence();
     }
 
@@ -52,6 +51,8 @@ public class ReadFASTAAndFormat {
             //looks like ID
             if (splitInputBlankLines[idx].trim().startsWith(">")) {
                 id = splitInputBlankLines[idx].trim();
+                String tempId = id;
+                logger.log(Level.FINER, () -> "ID identified as "+ tempId);
                 idx++;
             }
 
@@ -68,6 +69,7 @@ public class ReadFASTAAndFormat {
                     sequenceCollector.append(splitInputBlankLines[idx].trim());
                     idx++;
                 }
+                logger.log(Level.FINER, () -> "Sequence identified as " + sequenceCollector.toString() );
             }
 
             //identify blank lines
@@ -83,18 +85,23 @@ public class ReadFASTAAndFormat {
             if (sequenceCollector.length() == 0) {
                 if (id != null ) {
                     String errMsg = "Submitted sequence " + id + " had no associated sequence.";
-                    errorMessages.add(errMsg);
                     logger.log(Level.INFO,errMsg);
+                    errorMessages.add(errMsg);
                 }
             } else {
 
                 //generate ID name if missing
-                if (id == null || id.length() == 1) { id = ">Sequence-" + automaticNameCount++; }
+                if (id == null || id.length() == 1) {
+                    id = ">Sequence-" + automaticNameCount++;
+                    String tempId = id;
+                    logger.log(Level.INFO, () -> "Placeholder name given for sequence without name " + tempId);
+                }
 
                 //try and build object
                 try {
                     arrayFASTA.add(new FASTAObject(id, sequenceCollector.toString()));
                 } catch (ExceptionsFASTALength | ExceptionsFASTABadAA | ExceptionsFASTANoSequence err) {
+                    logger.log(Level.INFO, () -> "Errors raised " + err.getMessage());
                     errorMessages.add(err.getMessage());
                 }
             }
