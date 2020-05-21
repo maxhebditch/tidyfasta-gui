@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class TidyFASTAGUI extends JFrame {
     private JPanel mainPanel;
 
@@ -47,7 +46,9 @@ public class TidyFASTAGUI extends JFrame {
     private JPanel outputButtonPanel;
     private JPanel outputTitlePanel;
 
+    private String submittedFASTA;
     private String validFASTA;
+    private String lastSaveFileName;
     private StringBuilder errorMessage;
 
     transient Logger logger = Logger.getLogger(TidyFASTAGUI.class.getName());
@@ -61,40 +62,39 @@ public class TidyFASTAGUI extends JFrame {
 
         logger.log(Level.FINER, "Constructing GUI App");
 
-        openButton.addActionListener(e -> openFile());
+        openButton.addActionListener(e -> openFileChooser());
 
         submitButton.addActionListener(e -> {
             clearOutput();
-            submitSequence();
+            handleSubmission(inputAreaFASTA.getText());
         });
 
         copyButton.addActionListener(e -> copyValidFASTAToClipboard());
 
-        saveButton.addActionListener(e -> {
-            if (validFASTA != null) {
-                logger.log(Level.FINER, "Writing file");
-                writeFile();
-            } else {
-                String saveMsg = "Submit file before saving.";
-                JOptionPane.showMessageDialog(mainPanel,
-                        saveMsg);
+        saveButton.addActionListener(e -> saveHandler());
+    }
+
+
+    public void handleSubmission(String submittedFASTA) {
+
+        if (submittedFASTA.length() > 0) {
+            if (submitSequence(submittedFASTA)) {
+                displaySubmissionOutput();
             }
-        });
+        } else {
+            String errMsg = "No sequence submitted";
+            logger.log(Level.INFO, errMsg);
+            JOptionPane.showMessageDialog(mainPanel, errMsg);
+        }
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new TidyFASTAGUI("Tidy FASTA");
-        frame.setVisible(true);
-    }
-
-    public void openFile() {
+    public void openFileChooser() {
 
         final JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "FASTA/TEXT FILES", "txt", "text", "fasta", "fa", "FASTA");
         chooser.setFileFilter(filter);
         int chooserResult = chooser.showOpenDialog(mainPanel);
-
 
         File fileFASTA;
         if (chooserResult == JFileChooser.APPROVE_OPTION) {
@@ -106,6 +106,10 @@ public class TidyFASTAGUI extends JFrame {
             return;
         }
 
+        openFile(fileFASTA);
+    }
+
+    public void openFile(File fileFASTA) {
         List<String> lines;
         Path filenameFASTA = fileFASTA.toPath();
 
@@ -118,6 +122,11 @@ public class TidyFASTAGUI extends JFrame {
             return;
         }
 
+        assembleLines(lines);
+        inputAreaFASTA.setText(submittedFASTA);
+    }
+
+    public void assembleLines(List<String> lines) {
         StringBuilder result = new StringBuilder();
 
         for (String line : lines) {
@@ -126,20 +135,12 @@ public class TidyFASTAGUI extends JFrame {
         }
         result.setLength(result.length() - 1);
 
-        inputAreaFASTA.setText(result.toString());
+        submittedFASTA = result.toString();
     }
 
-    public void submitSequence() {
-        String submittedSequences = inputAreaFASTA.getText();
+    public boolean submitSequence(String submittedFASTA) {
 
-        if (submittedSequences.length() == 0) {
-            String errMsg = "No sequence submitted";
-            logger.log(Level.INFO, errMsg);
-            JOptionPane.showMessageDialog(mainPanel, errMsg);
-            return;
-        }
-
-        ReadFASTAAndFormat objectFASTA = new ReadFASTAAndFormat(submittedSequences);
+        ReadFASTAAndFormat objectFASTA = new ReadFASTAAndFormat(submittedFASTA);
 
         if (continueWithAnalysis(objectFASTA)) {
             numValid.setText("Number of valid sequences: " + objectFASTA.getValidatedNumber());
@@ -164,8 +165,15 @@ public class TidyFASTAGUI extends JFrame {
             }
 
             validFASTA = outputFASTAText.toString();
-            outputAreaFASTA.setText(validFASTA);
+            return true;
+
+        } else {
+            return false;
         }
+    }
+
+    private void displaySubmissionOutput() {
+        outputAreaFASTA.setText(validFASTA);
     }
 
     public boolean continueWithAnalysis(ReadFASTAAndFormat objectFASTA) {
@@ -248,7 +256,18 @@ public class TidyFASTAGUI extends JFrame {
         outputAreaFASTA.setText("");
     }
 
-    public void writeFile() {
+    private void saveHandler() {
+        if (validFASTA != null) {
+            logger.log(Level.FINER, "Writing file");
+            saveFileChooser();
+        } else {
+            String saveMsg = "Submit file before saving.";
+            JOptionPane.showMessageDialog(mainPanel,
+                    saveMsg);
+        }
+    }
+
+    private void saveFileChooser() {
         JFileChooser saveChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "FASTA/TEXT FILES", "txt", "text", "fasta", "fa", "FASTA");
@@ -261,10 +280,15 @@ public class TidyFASTAGUI extends JFrame {
         File fileToSave;
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             fileToSave = saveChooser.getSelectedFile();
+            if (writeFile(fileToSave)) {
+                savePopup();
+            }
         } else {
             logger.log(Level.INFO, "No file chosen for saving");
-            return;
         }
+    }
+
+    public boolean writeFile(File fileToSave) {
 
         String fileString = fileToSave.toString();
 
@@ -287,21 +311,29 @@ public class TidyFASTAGUI extends JFrame {
                     JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.NO_OPTION) {
                 logger.log(Level.FINER, () -> saveFileName.toString() + " not overwritten.");
-                return;
+                return false;
+            } else {
+                logger.log(Level.FINER, () -> saveFileName.toString() + " overwritten.");
+                return true;
             }
         }
-        logger.log(Level.FINER, () -> saveFileName.toString() + " overwritten.");
 
         try {
             Files.write(saveFileName, Collections.singleton(validFASTA));
-            String saveMsg = saveFileName.toString() + " saved!";
-            logger.log(Level.INFO, saveMsg);
-            JOptionPane.showMessageDialog(mainPanel, saveMsg);
+            lastSaveFileName = saveFileName.toString();
+            return true;
         } catch (IOException err) {
             String saveMsg = saveFileName.toString() + " not writable.";
             logger.log(Level.INFO, saveMsg);
             JOptionPane.showMessageDialog(mainPanel, saveMsg);
+            return false;
         }
+    }
+
+    private void savePopup() {
+        String saveMsg = lastSaveFileName + " saved!";
+        logger.log(Level.INFO, saveMsg);
+        JOptionPane.showMessageDialog(mainPanel, saveMsg);
     }
 
     public void copyValidFASTAToClipboard() {
@@ -309,6 +341,11 @@ public class TidyFASTAGUI extends JFrame {
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
         cb.setContents(validFASTASelect, null);
         logger.log(Level.FINER, "Contents saved to clipboard");
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new TidyFASTAGUI("Tidy FASTA");
+        frame.setVisible(true);
     }
 
 
@@ -426,4 +463,15 @@ public class TidyFASTAGUI extends JFrame {
         return mainPanel;
     }
 
+    public String getValidOutput() {
+        return validFASTA;
+    }
+
+    public String getSubmittedFASTA() {
+        return submittedFASTA;
+    }
+
+    public String getErrorMessages() {
+        return errorMessage.toString();
+    }
 }
