@@ -6,7 +6,7 @@ An open source and cross platform application to fix, and find problems in prote
 
 ![Reformat whitespace](images/tidyFASTA-reformat.png)
 
-![Non canonical AA](images/tidyFASTA-badAA.png)
+![Non-canonical AA](images/tidyFASTA-badAA.png)
 
 ### Features
 tidyFASTA is a cross platform application (Windows, Mac OS X, Linux) and is available free of charge and without registration.
