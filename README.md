@@ -1,4 +1,4 @@
-# Tidy FASTA
+# Tidy FASTA GUI
 ![Build](https://github.com/maxhebditch/tidyfasta-gui/workflows/Build/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.proteinsol.tidyfasta%3Atidyfasta-gui&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.proteinsol.tidyfasta%3Atidyfasta-gui)
 
@@ -6,10 +6,10 @@ An open source and cross platform application to fix, and find problems in prote
 
 ![Reformat whitespace](images/tidyFASTA-reformat.png)
 
-![Non canonical AA](images/tidyFASTA-badAA.png)
+![Non-canonical AA](images/tidyFASTA-badAA.png)
 
 ### Features
-tidyFASTA is a cross platform application (Window, Mac OS X, Linux) and is available free of charge and without registration.
+tidyFASTA is a cross platform application (Windows, Mac OS X, Linux) and is available free of charge and without registration.
 
 ## Problems and fixes
 

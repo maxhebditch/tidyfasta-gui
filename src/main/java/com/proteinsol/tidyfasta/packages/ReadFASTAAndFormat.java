@@ -1,17 +1,17 @@
 package com.proteinsol.tidyfasta.packages;
 
-//TODO logs
-
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTABadAA;
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTALength;
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTANoSequence;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReadFASTAAndFormat {
     public int getValidatedNumber(){ return arrayFASTA.size(); }
-    public int getSubmittedNumber(){ return arrayFASTA.size()+numErrors; }
-    public int getNumErrors(){ return numErrors; }
+    public int getSubmittedNumber(){ return arrayFASTA.size()+getNumErrors(); }
+    public int getNumErrors(){ return getErrMsgArray().length; }
     public List<FASTAObject> getArrayFASTA(){ return arrayFASTA; }
     public String getErrMsg(){ return String.join("\n", errorMessages); }
     public String[] getErrMsgArray(){ return errorMessages.toArray(new String[0]); }
@@ -19,11 +19,13 @@ public class ReadFASTAAndFormat {
     private String submittedFASTA;
     private final ArrayList<FASTAObject> arrayFASTA = new ArrayList<>();
     private int automaticNameCount = 0;
-    private int numErrors = 0;
     private final Set<String> errorMessages = new LinkedHashSet<>();
+
+    Logger logger = Logger.getLogger(ReadFASTAAndFormat.class.getName());
 
     public ReadFASTAAndFormat(String submittedFASTA){
         this.submittedFASTA = submittedFASTA;
+        logger.log(Level.FINER, () -> "Reading FASTA data "+submittedFASTA);
         assignIDAndSequence();
     }
 
@@ -49,6 +51,8 @@ public class ReadFASTAAndFormat {
             //looks like ID
             if (splitInputBlankLines[idx].trim().startsWith(">")) {
                 id = splitInputBlankLines[idx].trim();
+                String tempId = id;
+                logger.log(Level.FINER, () -> "ID identified as "+ tempId);
                 idx++;
             }
 
@@ -65,6 +69,7 @@ public class ReadFASTAAndFormat {
                     sequenceCollector.append(splitInputBlankLines[idx].trim());
                     idx++;
                 }
+                logger.log(Level.FINER, () -> "Sequence identified as " + sequenceCollector.toString() );
             }
 
             //identify blank lines
@@ -79,18 +84,24 @@ public class ReadFASTAAndFormat {
             //if the sequence is missing just create error message
             if (sequenceCollector.length() == 0) {
                 if (id != null ) {
-                    errorMessages.add("Submitted sequence " + id + " had no associated sequence.");
+                    String errMsg = "Submitted sequence " + id + " had no associated sequence.";
+                    logger.log(Level.INFO,errMsg);
+                    errorMessages.add(errMsg);
                 }
             } else {
 
                 //generate ID name if missing
-                if (id == null || id.length() == 1) { id = ">Sequence-" + automaticNameCount++; }
+                if (id == null || id.length() == 1) {
+                    id = ">Sequence-" + automaticNameCount++;
+                    String tempId = id;
+                    logger.log(Level.INFO, () -> "Placeholder name given for sequence without name " + tempId);
+                }
 
                 //try and build object
                 try {
                     arrayFASTA.add(new FASTAObject(id, sequenceCollector.toString()));
                 } catch (ExceptionsFASTALength | ExceptionsFASTABadAA | ExceptionsFASTANoSequence err) {
-                    numErrors++;
+                    logger.log(Level.INFO, () -> "Errors raised " + err.getMessage());
                     errorMessages.add(err.getMessage());
                 }
             }
