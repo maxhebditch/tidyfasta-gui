@@ -69,7 +69,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.jackrabbit:jackrabbit-jcr-commons:1.5.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-nop:1.5.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-jdk14:1.5.6" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-api:1.5.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:jcl-over-slf4j:1.5.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven.reporting:maven-reporting-api:2.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven.doxia:doxia-logging-api:1.1" level="project" />
@@ -98,5 +97,8 @@
     <orderEntry type="library" name="Maven: asm:asm:3.0" level="project" />
     <orderEntry type="library" name="Maven: com.jgoodies:forms:1.1-preview" level="project" />
     <orderEntry type="library" name="Maven: jdom:jdom:1.0" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.3" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
   </component>
 </module>

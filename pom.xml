@@ -8,7 +8,7 @@
    </properties>
     <groupId>com.proteinsol.tidyfasta</groupId>
     <artifactId>tidyfasta-gui</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <build>
         <plugins>
             <plugin>
@@ -141,6 +141,11 @@
             <groupId>com.intellij</groupId>
             <artifactId>forms_rt</artifactId>
             <version>7.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
         </dependency>
     </dependencies>
     <distributionManagement>
