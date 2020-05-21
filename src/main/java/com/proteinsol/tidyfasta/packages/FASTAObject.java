@@ -4,6 +4,8 @@ import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTABadAA;
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTALength;
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTANoSequence;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +21,11 @@ public class FASTAObject {
         return naa;
     }
 
+    Logger logger = Logger.getLogger(FASTAObject.class.getName());
+
     public FASTAObject(String subSequence){
+
+        logger.log(Level.FINE,() -> "New FASTA object creation attempt from sequence "+subSequence);
 
         if ( subSequence.startsWith(">")) {
             String errMsg = "Submitted sequence " + subSequence + " had no associated sequence.";
@@ -37,6 +43,8 @@ public class FASTAObject {
 
         id = subID;
         sequence = subSequence.toUpperCase();
+
+        logger.log(Level.FINE,() -> "New FASTA object creation attempt from ID "+id+" and sequence "+subSequence);
 
         validateLength();
         validateAA();

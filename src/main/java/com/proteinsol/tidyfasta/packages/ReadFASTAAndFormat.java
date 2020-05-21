@@ -7,11 +7,13 @@ import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTALength;
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTANoSequence;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReadFASTAAndFormat {
     public int getValidatedNumber(){ return arrayFASTA.size(); }
-    public int getSubmittedNumber(){ return arrayFASTA.size()+numErrors; }
-    public int getNumErrors(){ return numErrors; }
+    public int getSubmittedNumber(){ return arrayFASTA.size()+getNumErrors(); }
+    public int getNumErrors(){ return getErrMsgArray().length; }
     public List<FASTAObject> getArrayFASTA(){ return arrayFASTA; }
     public String getErrMsg(){ return String.join("\n", errorMessages); }
     public String[] getErrMsgArray(){ return errorMessages.toArray(new String[0]); }
@@ -19,8 +21,9 @@ public class ReadFASTAAndFormat {
     private String submittedFASTA;
     private final ArrayList<FASTAObject> arrayFASTA = new ArrayList<>();
     private int automaticNameCount = 0;
-    private int numErrors = 0;
     private final Set<String> errorMessages = new LinkedHashSet<>();
+
+    Logger logger = Logger.getLogger(ReadFASTAAndFormat.class.getName());
 
     public ReadFASTAAndFormat(String submittedFASTA){
         this.submittedFASTA = submittedFASTA;
@@ -79,7 +82,9 @@ public class ReadFASTAAndFormat {
             //if the sequence is missing just create error message
             if (sequenceCollector.length() == 0) {
                 if (id != null ) {
-                    errorMessages.add("Submitted sequence " + id + " had no associated sequence.");
+                    String errMsg = "Submitted sequence " + id + " had no associated sequence.";
+                    errorMessages.add(errMsg);
+                    logger.log(Level.INFO,errMsg);
                 }
             } else {
 
@@ -90,7 +95,6 @@ public class ReadFASTAAndFormat {
                 try {
                     arrayFASTA.add(new FASTAObject(id, sequenceCollector.toString()));
                 } catch (ExceptionsFASTALength | ExceptionsFASTABadAA | ExceptionsFASTANoSequence err) {
-                    numErrors++;
                     errorMessages.add(err.getMessage());
                 }
             }

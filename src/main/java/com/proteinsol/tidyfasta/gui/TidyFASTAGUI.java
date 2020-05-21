@@ -19,6 +19,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class TidyFASTAGUI extends JFrame {
     private JPanel mainPanel;
@@ -46,6 +49,8 @@ public class TidyFASTAGUI extends JFrame {
 
     private String validFASTA;
     private StringBuilder errorMessage;
+
+    Logger logger = Logger.getLogger(TidyFASTAGUI.class.getName());
 
     public TidyFASTAGUI(String title) {
         super(title);
@@ -153,9 +158,14 @@ public class TidyFASTAGUI extends JFrame {
 
     public boolean continueWithAnalysis(ReadFASTAAndFormat objectFASTA) {
 
+        logger.log(Level.INFO, objectFASTA.getErrMsg());
+        logger.log(Level.INFO, Integer.toString(objectFASTA.getNumErrors()));
+
         if (objectFASTA.getNumErrors() > 0) {
+            logger.log(Level.INFO, "Errors found");
             return testUserDesire(objectFASTA);
         } else {
+            logger.log(Level.FINE, "No Errors found");
             return true;
         }
 
