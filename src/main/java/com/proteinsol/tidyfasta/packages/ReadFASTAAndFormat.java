@@ -3,6 +3,7 @@ package com.proteinsol.tidyfasta.packages;
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTABadAA;
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTALength;
 import com.proteinsol.tidyfasta.exceptions.ExceptionsFASTANoSequence;
+import com.proteinsol.tidyfasta.utilities.MaybeID;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -32,7 +33,7 @@ public class ReadFASTAAndFormat {
     private void assignIDAndSequence() {
 
         //Variables to hold sequence as String and a StringBuilder to hold
-        String id = null;
+        MaybeID id = new MaybeID();
         StringBuilder sequenceCollector = new StringBuilder();
 
         //hack to add a buffer to the of the submission to prevent ugly
@@ -49,10 +50,8 @@ public class ReadFASTAAndFormat {
         // Walk through algorithm
         while (idx < endNum) {
             //looks like ID
-            if (splitInputBlankLines[idx].trim().startsWith(">")) {
-                id = splitInputBlankLines[idx].trim();
-                String tempId = id;
-                logger.log(Level.FINER, () -> "ID identified as "+ tempId);
+            if (id.testLine(splitInputBlankLines[idx].trim())){
+                logger.log(Level.FINER, () -> "ID identified as "+ id.getID());
                 idx++;
             }
 
@@ -83,23 +82,21 @@ public class ReadFASTAAndFormat {
             //now finished walking through, try and build FASTA object
             //if the sequence is missing just create error message
             if (sequenceCollector.length() == 0) {
-                if (id != null ) {
-                    String errMsg = "Submitted sequence " + id + " had no associated sequence.";
-                    logger.log(Level.INFO,errMsg);
+                if (id.found()) {
+                    String errMsg = "Submitted sequence " + id.getID() + " had no associated sequence.";
+                    logger.log(Level.INFO, errMsg);
                     errorMessages.add(errMsg);
                 }
             } else {
-
                 //generate ID name if missing
-                if (id == null || id.length() == 1) {
-                    id = ">Sequence-" + automaticNameCount++;
-                    String tempId = id;
-                    logger.log(Level.INFO, () -> "Placeholder name given for sequence without name " + tempId);
+                if (!id.found()) {
+                    id.setID(">Sequence-" + automaticNameCount++);
+                    logger.log(Level.INFO, () -> "Placeholder name given for sequence without name " + id.getID());
                 }
 
                 //try and build object
                 try {
-                    arrayFASTA.add(new FASTAObject(id, sequenceCollector.toString()));
+                    arrayFASTA.add(new FASTAObject(id.getID(), sequenceCollector.toString()));
                 } catch (ExceptionsFASTALength | ExceptionsFASTABadAA | ExceptionsFASTANoSequence err) {
                     logger.log(Level.INFO, () -> "Errors raised " + err.getMessage());
                     errorMessages.add(err.getMessage());
@@ -108,7 +105,7 @@ public class ReadFASTAAndFormat {
 
             //empty variables
             sequenceCollector.setLength(0);
-            id = null;
+            id.empty();
         }
 
     }
