@@ -1,6 +1,5 @@
 # Tidy FASTA GUI
 ![Build](https://github.com/maxhebditch/tidyfasta-gui/workflows/Build/badge.svg)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.proteinsol.tidyfasta%3Atidyfasta-gui&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.proteinsol.tidyfasta%3Atidyfasta-gui)
 
 An open source and cross platform application to fix, and find problems in protein FASTA sequence files.
 
